@@ -8,23 +8,33 @@
   <script type="text/javascript">
 
   var bits=new Bitstream();
-  bits.open([0xAF]);
-  bits.read();        <- read 1bit = 1
-  bits.read();        <- read 1bit = 0
-  bits.read(6);       <- read 6bit = 47 == 2F
-
   bits.open();
-  bits.write(1)       <- write 1bit -> [128]
-  bits.write(0);      <- write 1bit -> [128]
-  bits.write(0x2f,6); <- write 6bit -> [175]
 
-	$(function () {
-  });
+  add=function(mes){
+    $('#result').append(mes+'\n');
+  };
+  adddata=function(){
+    var mes='bits[';
+    for (var i=0;i<bits.data.length;i++){
+      mes+=bits.data[i].toString(16);
+    }
+    mes+=']';
+    $('#result').append(mes+'\n');
+  };
+
   </script>
 </head>
 <body>
-<h1>Bitstream</h1>
-<span></span><br>
+<h1>Bitstream.js</h1>
+<span>
+  var bits=new Bitstream();<br />
+  bits.open();<br />
+<textarea cols=80 rows=10 id="result"></textarea><br>
+<button onclick="bits.write(0xff,2);adddata()">write(0xff,2)</button><br>
+<button onclick="bits.seek(0);add('seek to 0')">seek(0)</button><br>
+<button onclick="var bit=bits.read(2);add('read(2) return '+bit)">read(2)</button><br>
+<br />
+</span><br>
 <br>
 </body>
 </html>

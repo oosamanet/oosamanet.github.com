@@ -18,13 +18,19 @@ usage:
 */
 var Bitstream=function(){
   var self=this;
-  self.cutbit=0;
+  self.curbit=0;
   self.data=[];
   self.open=function(data){
     if (data==undefined)
       data=[];
     self.curbit=0;
     self.data=data;
+  };
+  self.seek = function(to){
+    if (to>=self.data.length*8){
+      return -1;
+    }
+    self.curbit=to;
   };
   self.read = function(bits){
     if (self.curbit>=self.data.length*8){
