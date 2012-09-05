@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.1.0.js"></script>
+  <script type="text/javascript" src="../bitstream.js"></script>
+  <script type="text/javascript" src="../fish.js"></script>
+  <script type="text/javascript">
+
+	var fish=new Fish();
+  var vm={};
+  vm.state=ko.observable("encode");
+  vm.data=ko.observable("");
+  vm.name=ko.computed(function(){
+    if (vm.state()=="encode"){
+      return "平文";
+    }else{
+      return "お魚暗号文";
+    }
+  });
+  vm.button=ko.computed(function(){
+    if (vm.state()=="encode"){
+      return "暗号化する！";
+    }else{
+      return "平文に戻す！";
+    }
+  });
+  vm.go=function(data){
+    if (vm.state()=="encode"){
+	    vm.data(fish.encode(vm.data()));
+	    vm.state("decode");
+    }else{
+	    vm.data(fish.decode(vm.data()));
+	    vm.state("encode");
+    }
+  };
+
+	$(function () {
+    ko.applyBindings(vm);
+  });
+  </script>
+</head>
+<body>
+<h1>お魚暗号システム</h1>
+<span data-bind="text: name"></span><br>
+<textarea id="src" cols=80 rows=4 data-bind="value: data, valueUpdate: 'afterkeydown'"></textarea><br>
+<br>
+<button data-bind="text: button, click: go"></button>
+</body>
+</html>

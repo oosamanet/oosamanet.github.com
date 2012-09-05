@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="../bitstream.js"></script>
+  <script type="text/javascript">
+
+  var bits=new Bitstream();
+  bits.open([0xAF]);
+  bits.read();        <- read 1bit = 1
+  bits.read();        <- read 1bit = 0
+  bits.read(6);       <- read 6bit = 47 == 2F
+
+  bits.open();
+  bits.write(1)       <- write 1bit -> [128]
+  bits.write(0);      <- write 1bit -> [128]
+  bits.write(0x2f,6); <- write 6bit -> [175]
+
+	$(function () {
+  });
+  </script>
+</head>
+<body>
+<h1>Bitstream</h1>
+<span></span><br>
+<br>
+</body>
+</html>

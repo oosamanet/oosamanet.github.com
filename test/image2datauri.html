@@ -1,0 +1,26 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta charset="UTF-8" /> 
+<title>image to datauri</title>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../image2datauri.js"></script>
+<script>
+function convert(){
+  var callback=function(s){
+    $('#result').val(s);
+    $('#resultimg').html('<img src='+s+'>');
+  }
+  image2datauri($('#imageurl').val(),callback);
+}
+</script>
+</head> 
+<body>
+<h1>image to datauri(Ajax版)</h1>
+  画像のURL：<input type="text" id="imageurl" value="sample.jpg" /><br>
+　■結果<br>
+  <textarea cols=80 rows=10 id="result"></textarea><br>
+  <button onclick="convert();return false;">変換する</button><br>
+<div id="resultimg"></div>
+</body> 
+</html>
