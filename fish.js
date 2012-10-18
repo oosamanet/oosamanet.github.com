@@ -47,6 +47,16 @@ var Fish=function(){
       }
       return data;
   };
+  self.isfish=function(str){
+    if (str.length==0)
+      return false;
+    for (var i=0;i<str.length;i++){
+      if (self.fish2n(str.charAt(i))==undefined){
+        return false;
+      }
+    }
+    return true;
+  };
   self.encode=function(str){
     var out="",v;
     var data=self.s2data(str);

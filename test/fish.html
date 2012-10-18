@@ -13,6 +13,13 @@
   var vm={};
   vm.state=ko.observable("encode");
   vm.data=ko.observable("");
+  vm.data.subscribe(function(newvalue){
+    if (fish.isfish(newvalue)){
+      vm.state("decode");
+    }else{
+      vm.state("encode");
+    }
+  });
   vm.name=ko.computed(function(){
     if (vm.state()=="encode"){
       return "平文";
@@ -30,10 +37,8 @@
   vm.go=function(data){
     if (vm.state()=="encode"){
 	    vm.data(fish.encode(vm.data()));
-	    vm.state("decode");
     }else{
 	    vm.data(fish.decode(vm.data()));
-	    vm.state("encode");
     }
   };
 
