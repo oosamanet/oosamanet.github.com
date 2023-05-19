@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>SRT Checker</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script>
+function go(){
+  $("#log").val("");
+  var lines = $("#srt").val().split("\n");
+  console.info("lines",lines);
+  var n,lastn,lasts,laste,s,e;
+  var has_ans = false;
+  for (var i=0;i<lines.length;i++){
+    var l = lines[i];
+    if (l.match(/^[0-9]+$/)){
+      lastn = n;
+      n = Math.floor(l);
+      if (lastn && lastn + 1 != n){
+        addlog("ERROR:" + n + " is not next to " + lastn);
+      }
+    }else if (l.match(/^[0-9:]+/)){
+      if (!l.match(/ --> /)){
+        addlog("ERROR:" + n + " TIMECODE format is invalid: " + l);
+      }else{
+        var res = l.match(/^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3}) --> ([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})/);
+        if (!res){
+          addlog("ERROR:" + n + " TIMECODE format is invalid: " + l);
+          has_ans = true;
+        }else{
+          s = res[1]+res[2]+res[3]+res[4];
+          e = res[5]+res[6]+res[7]+res[8];
+          if (laste && laste > s){
+          addlog("ERROR:" + n + " Start time["+s+"] is before "+lastn+" End time["+laste+"]");
+          }
+          if (s >= e){
+          addlog("ERROR:" + n + " Start time["+s+"] is before End time["+e+"]");
+          }
+        }
+      }
+    }
+  }
+  if (has_ans){
+    var ans = $("#srt").val().replace(/([0-9]{2}):([0-9]{2}):([0-9]{2}):([0-9]{3})/g,"$1:$2:$3,$4");
+    $("#ansinfo").html("Below is converted text. 00:00:00:000 to 00:00:00,000 if you send movie to Youtube use below text.");
+    $("#ans").val(ans);
+  }else{
+    $("#ansinfo").html("");
+    $("#ans").val("");
+  }
+}
+function addlog(mes){
+  var log = $("#log").val();
+  if (log != ""){
+    log = log + "\n";
+  }
+  $("#log").val(log + mes);
+}
+</script>
+</head>
+<body>
+Please paste all text in SRT file<button onclick="go()">CHECK IT</button><br />
+<textarea id="srt" cols="80" rows="15"></textarea><br />
+Result<br />
+<textarea id="log" cols="80" rows="20"></textarea><br />
+<span id="ansinfo"></span><br />
+<textarea id="ans" cols="80" rows="20"></textarea><br />
+</body>
+</html>
