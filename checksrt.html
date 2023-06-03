@@ -17,7 +17,7 @@ function go(){
       if (lastn && lastn + 1 != n){
         addlog("ERROR:" + n + " is not next to " + lastn);
       }
-    }else if (l.match(/^[0-9:]+/)){
+    }else if (l.match(/^[0-9:, ->]+$/)){
       if (!l.match(/ --> /)){
         addlog("ERROR:" + n + " TIMECODE format is invalid: " + l);
       }else{
